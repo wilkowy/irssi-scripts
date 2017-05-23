@@ -7,7 +7,7 @@
 ## Other credits:                                               ##
 ##   Bjoern 'fuchs' Krombholz for splitlong.pl calculations     ##
 ##################################################################
-
+ 
 # Tested more or less with irssi 0.8.15 & 0.8.18 and Perl 5.8.8, 5.10.1, 5.14.2, 5.16.3 & 5.18.2
 
 # Script works with:
