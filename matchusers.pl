@@ -34,7 +34,7 @@ use Irssi qw(theme_register command_bind printformat signal_stop channels);
 
 $VERSION = '1.0';
 %IRSSI = (
-	name		=> 'matchuser',
+	name		=> 'matchusers',
 	description	=> 'Search for users matching criteria',
 	authors		=> 'wilk',
 	contact		=> 'wilk @ IRCnet',

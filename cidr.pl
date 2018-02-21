@@ -24,7 +24,7 @@ use Irssi qw(theme_register command_bind printformat signal_stop);
 
 $VERSION = '1.0';
 %IRSSI = (
-	name		=> 'privacy',
+	name		=> 'cidr',
 	description	=> 'Converts between CIDR, IP with mask and IP range',
 	authors		=> 'wilk',
 	contact		=> 'wilk @ IRCnet',
