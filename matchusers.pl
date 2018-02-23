@@ -2,9 +2,10 @@
 ##  User search by wilk/xorandor  ##
 ####################################
 #
-# /matchusers [-a/n/i/h/r/f] <pattern>
+# /matchusers [-a/n/i/h/r/f] <pattern> [channel]
 #  Search for known users matching a pattern from all channels (status)
-#   or from active channel.
+#   or from active channel. You may also give channel name to search
+#   only there.
 #  Supports multiple networks (appends network tag).
 #
 #  Options:
@@ -47,7 +48,8 @@ Irssi::theme_register([
 	'matchusers_nicks',			'Matches (%_$0%_): $1',
 	'matchusers_count',			'Total matches: $0',
 	'matchusers_no_matches',	'No matches found for $0',
-	'matchusers_usage',			'Usage: /matchusers [-a/n/i/h/r/f] <pattern>',
+	'matchusers_no_channel',	'No such channel is joined',
+	'matchusers_usage',			'Usage: /matchusers [-a/n/i/h/r/f] <pattern> [channel]',
 ]);
 
 sub cmd_matchusers {
@@ -77,8 +79,15 @@ sub cmd_matchusers {
 		s/\&/\[a-zA-Z\]/g;
 	}
 	$re_pattern = "^$re_pattern\$";
+	my $forchan = $args[$id + 1] // '';
+	my $chan = ($forchan ne '') ? $server->channel_find($forchan) : undef;
 	my @channels;
-	if ($channel && ($channel->{type} eq 'CHANNEL')) {
+	if (defined $chan) {
+		push(@channels, $chan);
+	} elsif ($forchan ne '') {
+		printformat(MSGLEVEL_CRAP, 'matchusers_no_channel');
+		return;
+	} elsif ($channel && ($channel->{type} eq 'CHANNEL')) {
 		push(@channels, $channel);
 	} else {
 		@channels = channels();
@@ -114,7 +123,7 @@ sub cmd_help {
 	$cmd =~ s/^\s+|\s+$//g;
 	if (lc($cmd) eq 'matchusers') {
 		print CLIENTCRAP;
-		print CLIENTCRAP 'MATCHUSERS [-a/n/i/h/r/f] <pattern>';
+		print CLIENTCRAP 'MATCHUSERS [-a/n/i/h/r/f] <pattern> [channel]';
 		print CLIENTCRAP;
 		print CLIENTCRAP '   -a - match against nick!ident@host (default)';
 		print CLIENTCRAP '   -n - match against nicks';
@@ -123,7 +132,7 @@ sub cmd_help {
 		print CLIENTCRAP '   -r - match against real names (excluded from default search, use "-a -r")';
 		print CLIENTCRAP '   -f - display full hostname';
 		print CLIENTCRAP;
-		print CLIENTCRAP 'Search for known users matching a pattern from all channels (status) or from active channel.';
+		print CLIENTCRAP 'Search for known users matching a pattern from all channels (status) or from active channel. You may also give channel name to search only there.';
 		print CLIENTCRAP;
 		print CLIENTCRAP 'Wildcards: * (zero or more characters), ? (one character), % (one digit), & (one alphabetic character)';
 		print CLIENTCRAP;
