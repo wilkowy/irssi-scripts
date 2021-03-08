@@ -43,7 +43,7 @@ use warnings;
 use Irssi qw(theme_register current_theme command_bind settings_add_int settings_add_bool settings_add_str settings_get_int settings_get_bool settings_get_str settings_set_int settings_set_bool settings_set_str printformat timeout_add_once timeout_remove signal_add_last signal_remove signal_stop signal_emit);
 use Time::HiRes qw(time);
 
-our $VERSION = '170819';
+our $VERSION = '170819-fix';
 our %IRSSI = (
 	authors			=> 'wilk',
 	name			=> 'iQuiz',
@@ -278,10 +278,10 @@ my $theme = [
 	'quiz_msg_noscores-en',			"\00303Scoreboard is still empty.",
 	'quiz_msg_scores',				"\00303Wyniki quizu po %s i %u %s:", # 1: time_str (hms), 2: question, 3: quiz_flx_aquestions, 4: questions (total), 5: quiz_flx_fquestions (total)
 	'quiz_msg_scores-en',			"\00303Quiz scores after %s and %u %s:",
-	'quiz_msg_scores_place',			"\00303%u. miejsce: \00304%s\00303 - \00304%d\00303 %s [%.1f%%] (sr. czas zgadywania: %10\$.3f sek.)", # 1: place, 2: nick, 3: score, 4: quiz_flx_points, 5: score%, 6: answers, 7: quiz_flx_answers, 8: answers%, 9: best time, 10: avg time, 11: best speed, 12: avg speed, 13: spacer
-	'quiz_msg_scores_place-en',			"\00303%u. place: \00304%s\00303 - \00304%d\00303 %s [%.1f%%] (avg. guessing time: %10\$.3fs)",
-	'quiz_msg_scores_place_full',		"\00303%u. miejsce: \00304%s\00303 - \00304%d\00303 %s [%.1f%%] (%u %s, sr. czas zgadywania: %10\$.3f sek.)", # see quiz_msg_scores_place
-	'quiz_msg_scores_place_full-en',	"\00303%u. place: \00304%s\00303 - \00304%d\00303 %s [%.1f%%] (%u %s, avg. guessing time: %10\$.3fs)",
+	'quiz_msg_scores_place',			"\00303%u. miejsce: \00304%s\00303 - \00304%d\00303 %s [%.1f%%]", # 1: place, 2: nick, 3: score, 4: quiz_flx_points, 5: score%, 6: answers, 7: quiz_flx_answers, 8: answers%, 9: best time, 10: avg time, 11: best speed, 12: avg speed, 13: spacer
+	'quiz_msg_scores_place-en',			"\00303%u. place: \00304%s\00303 - \00304%d\00303 %s [%.1f%%]",
+	'quiz_msg_scores_place_full',		"\00303%u. miejsce: \00304%s\00303 - \00304%d\00303 %s [%.1f%%] (%u %s)", # see quiz_msg_scores_place
+	'quiz_msg_scores_place_full-en',	"\00303%u. place: \00304%s\00303 - \00304%d\00303 %s [%.1f%%] (%u %s)",
 	'quiz_msg_team_score',			"\00303Druzyna %u (%s): \00304%d\00303 %s", # 1: team, 2: players (comma separated), 3: score, 4: quiz_flx_points, 5: score%, 6: answers, 7: quiz_flx_answers, 8: answers%
 	'quiz_msg_team_score-en',		"\00303Team %u (%s): \00304%d\00303 %s",
 	'quiz_msg_team_score_full',		"\00303Druzyna %u (%s): \00304%d\00303 %s (%6\$u %7\$s)", # see quiz_msg_team_score
@@ -402,6 +402,7 @@ sub l10n {
 
 sub get_format {
 	my ($format, $args) = @_;
+	no warnings;
 	return sprintf(current_theme()->get_format(__PACKAGE__, l10n($format)), ref($args) ? @{$args} : (defined($args) ? $args : ()));
 }
 
