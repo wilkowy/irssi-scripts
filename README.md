@@ -1,4 +1,4 @@
-# irssi-scripts
+# irssi scripts
 My irssi scripts. Check [Wiki](https://github.com/wilkowy/irssi-scripts/wiki) for more informations and examples.
 
 - iQuiz - irssi quiz script (Dizzy + Mieszacz + Familiada + Pomieszany)
